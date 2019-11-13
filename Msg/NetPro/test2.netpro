@@ -1,0 +1,22 @@
+message CSsadasdasda{
+	option (msgid) = 1;
+	optional int32 type = 1;
+}
+
+message CSqweqweqweqwe
+{
+	option (msgid) = 1;
+	             optional int32 type = 2;
+	repeated int32
+	adasdas = 3;
+}
+
+message CSzxvzcxvzxcvxczv{
+	option (msgid) = 1;
+	optional int32 type = 3;}
+
+message CSdfgrwerqweqweqweqw
+{
+	option (msgid) = 1;
+	optional int32 type = 4;
+	repeated int32 type = 5;}

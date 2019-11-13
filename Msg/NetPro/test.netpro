@@ -1,0 +1,22 @@
+message CS1{
+	option (msgid) = 1;
+	optional int32 type = 1;
+}
+
+message CS2
+{
+	option (msgid) = 1;
+	             optional int32 type = 2;
+	repeated int32
+	adasdas = 3;
+}
+
+message CS3{
+	option (msgid) = 1;
+	optional int32 type = 3;}
+
+message CS4
+{
+	option (msgid) = 1;
+	optional int32 type = 4;
+	repeated int32 type = 5;}
