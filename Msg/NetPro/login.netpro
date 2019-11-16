@@ -5,7 +5,7 @@ message CSLogin{
 }
 
 message SCLogin{
-	option (msgid) = 1;
+	option (msgid) = 2;
 	optional string name = 1;
-                optional int32 resule = 2;   
+        optional int32 resule = 2;   
 }
