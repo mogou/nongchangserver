@@ -1,0 +1,11 @@
+message CSLogin{
+	option (msgid) = 1;
+	optional string name = 1;
+	optional string password = 2;
+}
+
+message SCLogin{
+	option (msgid) = 1;
+	optional string name = 1;
+                optional int32 resule = 2;   
+}
