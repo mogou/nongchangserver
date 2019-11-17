@@ -24,7 +24,7 @@ def recv_action():
 
                 if buf is not None or len(buf) != 0:
                     for j in range(len(conneList)):
-                        print("2222----: " + str(conneList[j][1]))
+                        #print("2222----: " + str(conneList[j][1]))
                         strvalue = "0002" + str(conneList[j][1]) + buf
                         try:
                             conneList[j][0].send(bytes(strvalue, encoding="utf-8"))
@@ -65,6 +65,7 @@ def send_action():
     global conneList
 
     while True:
+       
         lock_.acquire()
         if lastpeopel_num != len(conneList) and len(conneList) != 0:
             lastpeopel_num = len(conneList)
@@ -99,6 +100,7 @@ def accept_action():
             connection, address = sock.accept()
             lock_.acquire()
             conneList.append((connection, address))
+            connection.setblocking(False)
             lock_.release()
             print(str(address) + "server lin num is " + str(len(conneList)))
         except Exception:
@@ -114,7 +116,7 @@ def listen_socket():
     lastpeopel_num = 0
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.bind(('127.0.0.1', 8001))
+    sock.bind(('0.0.0.0', 8001))
     # sock.bind(('47.98.233.255', 8001))
     sock.listen(5)
     sock.setblocking(False)
