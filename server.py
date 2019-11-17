@@ -6,57 +6,66 @@ import time
 conneList = []
 sock = None
 lastpeopel_num = 0
-
+lock_ = threading.Lock()
 
 def recv_action():
     global conneList
     global lastpeopel_num
 
     while True:
-        for client_socket, client_addr in conneList:
+        lock_.acquire()
+        for i in range(len(conneList)):
             # client_socket.settimeout(10)
+            #print("111----: " + str(conneList[i][1]))
             try:
-                buf = client_socket.recv(1024)
+                buf = conneList[i][0].recv(1024)
                 buf = bytes.decode(buf)
-                print(str(client_addr) + "  get value  " + buf)
+                print(str(conneList[i][1]) + "  get value  " + buf)
 
                 if buf is not None or len(buf) != 0:
-                    for client_, addr_ in conneList:
-                        strvalue = "0002" + str(client_addr) + buf
+                    for j in range(len(conneList)):
+                        print("2222----: " + str(conneList[j][1]))
+                        strvalue = "0002" + str(conneList[j][1]) + buf
                         try:
-                            client_.send(bytes(strvalue, encoding="utf-8"))
+                            conneList[j][0].send(bytes(strvalue, encoding="utf-8"))
                         except ConnectionResetError:
-                            conneList.remove((client_, addr_))
+                            conneList.remove(conneList[j])
                             lastpeopel_num = 0
                             pass
                 else:
+                    conneList.remove(conneList[i])
+                    lastpeopel_num = 0
                     print("out")
+
             except ConnectionAbortedError:
                 print("ConnectionAbortedError  player QZ exit")
-                conneList.remove((client_socket, client_addr))
-                print("remove player " + str(client_addr))
+                print("remove player " + str(conneList[i][1]))
+                conneList.remove(conneList[i])
                 lastpeopel_num = 0
                 pass
             except ConnectionResetError:
                 print("ConnectionResetError  player QZ exit")
-                conneList.remove((client_socket, client_addr))
-                print("remove player " + str(client_addr))
+                print("remove player " + str(conneList[i][1]))
+                conneList.remove(conneList[i])
                 lastpeopel_num = 0
                 pass
             except socket.timeout:
-                conneList.remove((client_socket, client_addr))
-                print("remove player " + str(client_addr))
+                print("remove player " + str(conneList[i][1]))
+                conneList.remove(conneList[i])
                 lastpeopel_num = 0
                 pass
             except Exception:
                 pass
+        lock_.release()
         time.sleep(0.1)
 
 
 def send_action():
     global lastpeopel_num
     global conneList
+
     while True:
+        lock_.acquire()
         if lastpeopel_num != len(conneList) and len(conneList) != 0:
             lastpeopel_num = len(conneList)
             for client_socket, client_addr in conneList:
@@ -77,6 +86,7 @@ def send_action():
                     pass
                 except Exception:
                     pass
+        lock_.release()
         time.sleep(0.1)
 
 
@@ -87,7 +97,9 @@ def accept_action():
     while True:
         try:
             connection, address = sock.accept()
+            lock_.acquire()
             conneList.append((connection, address))
+            lock_.release()
             print(str(address) + "server lin num is " + str(len(conneList)))
         except Exception:
             pass
