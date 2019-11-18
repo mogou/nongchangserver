@@ -22,7 +22,7 @@ def recv_action():
                 buf = bytes.decode(buf)
                 print(str(conneList[i][1]) + "  get value  " + buf)
 
-                if buf is not None or len(buf) != 0:
+                if buf != None or buf != "" or buf != " " or len(buf) != 0:
                     for j in range(len(conneList)):
                         #print("2222----: " + str(conneList[j][1]))
                         strvalue = "0002" + str(conneList[j][1]) + buf
